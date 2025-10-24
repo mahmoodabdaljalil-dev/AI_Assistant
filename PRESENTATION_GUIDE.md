@@ -35,8 +35,23 @@ save_memory: Proactively saves important details to the long-term knowledge base
 find_memories: Searches the knowledge base to answer questions.
 set_reminder: Creates time-based notifications with Windows desktop alerts and audio cues.
 show_reminders: Displays your complete calendar of all reminders (past and future).
-Speaker Notes: "This isn't just a language model. It's an agent. Using the ReAct framework, it can literally stop and 'think' about the best course of action. This might be answering you directly, or it might be deciding to use one of its tools, like saving a critical piece of information or setting a reminder that will actually notify you with desktop alerts and sounds."
-Slide 6: Live Demo: A Day in the Life
+update_memory: Modifies existing memories and their properties.
+delete_memory: Removes specific memories from storage.
+delete_reminder: Removes reminders with flexible deletion options.
+update_reminder: Changes reminder times or content after creation.
+find_reminders: Searches through reminders by content.
+show_statistics: Provides usage statistics and insights.
+Speaker Notes: "This isn't just a language model. It's an agent. Using the ReAct framework, it can literally stop and 'think' about the best course of action. This might be answering you directly, or it might be deciding to use one of its tools, like saving a critical piece of information or setting a reminder that will actually notify you with desktop alerts and sounds. The agent now includes 10 powerful tools for comprehensive memory and reminder management."
+Slide 6: Model Comparison & Evaluation
+Title: Scientific Model Evaluation Framework
+Visual: Show the compare_models.py output with different models compared across various categories.
+Key Features:
+Standardized testing across 6 capability categories
+Automated evaluation of multiple Hugging Face models
+Clear performance comparison tables
+Easy model selection guidance
+Speaker Notes: "To ensure we're using the best possible intelligence, we've developed a scientific evaluation framework. Our comparison script tests models against standardized prompts covering everything from basic greetings to complex reasoning tasks. This helps users choose the optimal model for their specific needs and ensures consistent, measurable performance."
+Slide 7: Live Demo: A Day in the Life
 Title: Let's See It in Action
 Presenter Action: Run the agent live or show a screen recording.
 Demo Script:
@@ -46,7 +61,7 @@ Demo Script:
 "The Calendar Check": Ask "show me my reminders" or "check my calendar" to demonstrate the show_reminders tool displaying all past and future reminders with status indicators.
 "The Follow-Up": Close and restart the agent to prove persistence. Then ask, "Who was the main contact for that project?" Show it using find_memories to retrieve the correct answer.
 Speaker Notes: "I'm now going to walk you through a practical scenario. We'll start a project, set a task with enhanced notifications, and then come back later to see how the agent remembers every detail, proving its statefulness and utility. Notice how the reminder system provides multiple notification methods to ensure you never miss important tasks."
-Slide 7: Architectural Blueprint
+Slide 8: Architectural Blueprint
 Title: How the Pieces Fit Together
 Visual: The detailed Mermaid diagram from the README.
 Key Walkthrough Points (Animate or highlight each step):
@@ -58,7 +73,7 @@ The Tool interacts with the EnhancedMemoryStore.
 The Store updates the SQLite DB and FAISS Index.
 A result is passed all the way back to the user.
 Speaker Notes: "This diagram shows the flow of information. It's a highly modular system orchestrated by LangChain. The AgentExecutor is the brain, but the real power comes from how it seamlessly integrates the LLM, our custom memory store, and the specific tools we've given it."
-Slide 8: Technical Stack
+Slide 9: Technical Stack
 Title: The Technologies Powering the Agent
 Visual: Use logos for each technology.
 Core Frameworks:
@@ -71,11 +86,12 @@ Sentence Transformers: To convert text into meaningful vector embeddings.
 Infrastructure:
 Python 3.11+: The modern language foundation.
 Rich: For a beautiful and user-friendly command-line interface.
-Platform Features: Windows users get enhanced notifications with desktop toasts and audio alerts (gracefully degrades on other platforms).
-Slide 9: Future Roadmap & Vision
+Platform Features: Windows users get enhanced notifications with desktop toasts and audio alerts (gracefully degrades on other platforms). The agent supports dynamic model switching via environment variables, allowing easy testing of different Hugging Face models like Mistral, Gemma, and Zephyr.
+Slide 10: Future Roadmap & Vision
 Title: The Path Forward: From Assistant to Partner
 Visual: A timeline or road with three milestones.
-Phase 1: Expanding Senses (Next 3 Months)
+Phase 1: Expanding Senses (Next 3 Months) ✅ COMPLETED
+Model Comparison Framework: Automated testing and evaluation of LLM models.
 Web Search Integration (Tavily): Give the agent access to real-time information.
 File System I/O: Allow it to read, summarize, and write local documents.
 Phase 2: Deeper Integration (Next 6 Months)
@@ -84,12 +100,12 @@ GUI Frontend: Build a user-friendly web interface with Streamlit or Gradio.
 Phase 3: Advanced Intelligence (Long-Term Vision)
 Multi-Agent Systems: Enable collaboration between specialized agents.
 Self-Improving Memory: Implement logic for the agent to autonomously review and summarize its own memories.
-Slide 10: Conclusion & Key Takeaways
+Slide 11: Conclusion & Key Takeaways
 Title: Summary: Beyond the Chatbot
 Takeaway 1: Statefulness is the Future: Persistent, semantic memory is the key to creating truly useful AI assistants.
 Takeaway 2: Agents are More Than Models: The power lies in combining LLMs with tools and a robust architecture (like ReAct).
 Takeaway 3: This is a Foundation: The agent is a powerful, extensible platform ready for integration with countless external APIs and future AI advancements.
-Slide 11: Q&A
+Slide 12: Q&A
 Title: Thank You
 Subtitle: Questions & Discussion
 Contact Info: Your Name / Email

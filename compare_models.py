@@ -6,6 +6,7 @@ from rich.table import Table
 from rich.panel import Panel
 from rich.live import Live
 from rich.spinner import Spinner
+from rich import markup
 
 # Ensure the main script's directory is in the path to import the agent
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -81,8 +82,9 @@ def run_comparison(models_to_test: list):
                     live.update(Spinner("bouncingBall", text=f"Running prompt: '{prompt_id}' for {model_id}..."))
 
                     # Invoke the agent
-                    response = agent.agent_executor.invoke({"input": prompt_text})
-                    output = response.get("output", "Error: No output received.")
+                    messages = [{"role": "user", "content": prompt_text}]
+                    response = agent.llm.invoke(messages)
+                    output = response.content
 
                     # Store the result
                     results[prompt_id][model_id] = output
@@ -118,7 +120,7 @@ def display_results(results: dict, models: list):
         for model_id in models:
             # Get the response for the current model, or a placeholder if missing
             response = model_responses.get(model_id, "[italic]No response[/italic]")
-            row_data.append(response)
+            row_data.append(markup.escape(str(response)))
         table.add_row(*row_data)
         table.add_section()
 

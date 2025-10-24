@@ -89,6 +89,12 @@ The agent comes equipped with several powerful tools to assist you:
 -   **find_memories**: Performs semantic search across your stored memories to find relevant information based on meaning, not just keywords.
 -   **set_reminder**: Creates time-based notifications that trigger with console messages, Windows desktop toasts, and audio alerts.
 -   **show_reminders**: Displays your complete calendar of all reminders, including both pending and completed ones with status indicators.
+-   **update_memory**: Modifies existing memories, allowing you to change content, tags, or importance levels.
+-   **delete_memory**: Removes specific memories from the knowledge base.
+-   **delete_reminder**: Removes one, multiple, or all reminders with flexible options.
+-   **update_reminder**: Changes reminder times or content after creation.
+-   **find_reminders**: Searches through reminders by content using semantic matching.
+-   **show_statistics**: Provides insights into your memory usage, including total memories, reminders, and usage patterns.
 
 ---
 
@@ -176,6 +182,8 @@ The agent needs this key to communicate with the models.
     HF_API_KEY="hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     ```
 
+**Note:** Hugging Face provides a limited number of free API calls. For extensive testing or production use, consider upgrading to a paid plan. The model comparison script can consume credits quickly when testing multiple models.
+
 ---
 
 ## 🚀 How to Run and Customize
@@ -188,17 +196,36 @@ Simply execute the main Python script:
 python main.py
 ```
 
+### Model Comparison Tool
+
+The project includes a model comparison script that tests different Hugging Face models against standardized prompts to evaluate their performance as AI agents:
+
+```sh
+python compare_models.py
+```
+
+This script will:
+- Test multiple models against various capability categories (Greeting & Persona, Memory Storage, Memory Retrieval, etc.)
+- Display results in a formatted table
+- Help you choose the best model for your needs
+
+You can specify which models to test:
+
+```sh
+python compare_models.py --models "mistralai/Mistral-7B-Instruct-v0.2" "google/gemma-2b-it"
+```
+
 ### Changing the LLM
 
 The default model is `mistralai/Mistral-7B-Instruct-v0.2`. To use a different one, you can set the `MODEL` environment variable before running the script.
 
 ```sh
 # Example on Windows (PowerShell)
-$env:MODEL="google/gemma-7b-it"
+$env:MODEL="google/gemma-2b-it"
 python main.py
 
 # Example on macOS/Linux
-export MODEL="google/gemma-7b-it"
+export MODEL="google/gemma-2b-it"
 python main.py
 ```
 
@@ -209,6 +236,7 @@ python main.py
 This agent is a strong foundation. Here are some potential directions for future development:
 
 -   **Expanding Capabilities:**
+    -   **Model Comparison Framework:** ✅ Implemented - Automated testing and comparison of different LLM models
     -   **Web Search:** Integrate a tool like Tavily or SerpAPI to allow the agent to answer questions about current events.
     -   **Calendar Integration:** Connect the `set_reminder` tool to the Google Calendar API.
     -   **File System Access:** Add tools to read, write, and summarize local files.
