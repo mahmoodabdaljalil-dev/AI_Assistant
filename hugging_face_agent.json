@@ -1,0 +1,76 @@
+{
+  "agent_name": "Advanced AI Memory Agent",
+  "version": "1.0.0",
+  "description": "An autonomous agent that leverages Hugging Face models for natural language understanding and tool use, with a focus on long-term memory and proactive assistance.",
+  "architecture": {
+    "type": "ReAct (Reasoning and Acting)",
+    "framework": "LangChain",
+    "core_logic_loop": "AgentExecutor"
+  },
+  "components": {
+    "llm": {
+      "provider": "Hugging Face",
+      "interface": "InferenceClient",
+      "default_model": "mistralai/Mistral-7B-Instruct-v0.2",
+      "description": "The central language model responsible for understanding user input, reasoning, and deciding which tools to use. The model can be dynamically configured at runtime."
+    },
+    "memory": {
+      "short_term": {
+        "type": "Conversational Buffer",
+        "implementation": "langchain.memory.ConversationBufferWindowMemory",
+        "config": {
+          "k": 10
+        },
+        "description": "Retains the last 10 turns of the conversation to maintain immediate context."
+      },
+      "long_term": {
+        "type": "Semantic Vector Store + SQL Database",
+        "vector_store": {
+          "implementation": "FAISS (Facebook AI Similarity Search)",
+          "embeddings_model": "sentence-transformers/all-MiniLM-L6-v2"
+        },
+        "database": {
+          "implementation": "SQLite",
+          "schema": ["memories", "reminders"]
+        },
+        "description": "Stores memories permanently. A vector store enables semantic search to find relevant information based on meaning, not just keywords."
+      }
+    },
+    "tools": [
+      {
+        "name": "save_memory",
+        "description": "Saves important information, facts, or context into the long-term semantic memory.",
+        "input_schema": {
+          "content": "string",
+          "tags": "array[string] (optional)",
+          "importance": "integer (optional, 1-10)"
+        }
+      },
+      {
+        "name": "find_memories",
+        "description": "Searches the long-term memory using semantic similarity to recall past information.",
+        "input_schema": {
+          "query": "string",
+          "limit": "integer (optional)"
+        }
+      },
+      {
+        "name": "set_reminder",
+        "description": "Creates a reminder for a future task or event by parsing natural language time expressions.",
+        "input_schema": {
+          "memory_content": "string",
+          "when": "string (e.g., 'in 30 minutes')"
+        }
+      }
+    ]
+  },
+  "functionalities": [
+    "Natural Language Understanding (NLU)",
+    "Conversational AI",
+    "Autonomous Tool Use",
+    "Semantic Memory Search",
+    "Proactive Reminders & Notifications",
+    "Persistent State (via SQLite and FAISS)",
+    "Dynamic Model Configuration"
+  ]
+}

@@ -1,0 +1,23 @@
+# Core AI and LangChain functionality (version 0.2.x for compatibility)
+langchain
+langchain-community
+langchain-core
+langchain-huggingface
+
+# Hugging Face client for model inference
+huggingface-hub
+
+# Vector store for semantic search
+faiss-cpu
+
+# Sentence Transformers for embeddings
+sentence-transformers
+
+# For loading environment variables from a .env file
+python-dotenv
+
+# For rich terminal UI (colors, panels, etc.)
+rich
+
+# Pydantic is a core dependency for LangChain tool schemas
+pydantic
