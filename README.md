@@ -77,7 +77,18 @@ graph TD
 3.  **The LLM (Hugging Face):** The Large Language Model receives the prompt and generates a "thought." This thought process might be a direct answer to you, or it might be a decision to use a tool.
 4.  **The Tools (Skills):** If the LLM decides to use a tool, the AgentExecutor calls the appropriate function (`save_memory`, `find_memories`, etc.).
 5.  **The Memory (Long-Term):** The tools interact directly with the `EnhancedMemoryStore`, which handles the logic of writing to the SQLite database and the FAISS vector store.
-6.  **The Response:** The result of the tool's action (e.g., "✓ Memory saved") or the LLM's direct answer is passed back to the AgentExecutor, which then delivers the final response to you.
+5.  **The Response:** The result of the tool's action (e.g., "✓ Memory saved") or the LLM's direct answer is passed back to the AgentExecutor, which then delivers the final response to you.
+
+---
+
+## 🛠️ Available Tools
+
+The agent comes equipped with several powerful tools to assist you:
+
+-   **save_memory**: Automatically saves important information, facts, and details to the long-term knowledge base for future reference.
+-   **find_memories**: Performs semantic search across your stored memories to find relevant information based on meaning, not just keywords.
+-   **set_reminder**: Creates time-based notifications that trigger with console messages, Windows desktop toasts, and audio alerts.
+-   **show_reminders**: Displays your complete calendar of all reminders, including both pending and completed ones with status indicators.
 
 ---
 
