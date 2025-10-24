@@ -1,5 +1,7 @@
 # Advanced AI Memory Agent
 
+![AI Memory Agent Interface](images/Képernyőkép%202025-10-24%20204521.png)
+
 **A persistent, proactive, and conversational AI agent designed to be a true digital companion. Powered by LangChain and state-of-the-art Hugging Face models.**
 
 This project addresses the fundamental limitation of most chatbots: their lack of memory. The Advanced AI Memory Agent is built from the ground up to remember, recall, and act upon information from past conversations. It uses a sophisticated dual-memory system to maintain both short-term context and long-term semantic knowledge, enabling it to function as a reliable, stateful assistant.
@@ -196,6 +198,10 @@ Simply execute the main Python script:
 python main.py
 ```
 
+![Agent Interface Demo](images/Képernyőkép%202025-10-24%20204521.png)
+
+The agent will start with a welcome message and begin the interactive conversation.
+
 ### Model Comparison Tool
 
 The project includes a model comparison script that tests different Hugging Face models against standardized prompts to evaluate their performance as AI agents:
@@ -208,6 +214,8 @@ This script will:
 - Test multiple models against various capability categories (Greeting & Persona, Memory Storage, Memory Retrieval, etc.)
 - Display results in a formatted table
 - Help you choose the best model for your needs
+
+![Model Comparison Results](images/Képernyőkép%202025-10-24%20204521.png)
 
 You can specify which models to test:
 
