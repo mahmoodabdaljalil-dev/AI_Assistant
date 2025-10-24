@@ -48,7 +48,7 @@ graph TD
 
     subgraph Agent Core [The Brain: AgentExecutor with ReAct Loop]
         B[AgentExecutor] -- Manages Flow --> B
-        B --> C{LLM (Hugging Face)}
+        B --> C{HuggingFace LLM}
         C -- Thought: I should save this memory --> B
         B -- Use save_memory tool --> T1[save_memory]
     end
