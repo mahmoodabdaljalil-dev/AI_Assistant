@@ -322,7 +322,7 @@ class AdvancedChatAgent:
                 self.store.set_reminder(memory.id, remind_at)
                 return f"✓ Reminder set for {remind_at.strftime('%Y-%m-%d %H:%M')} UTC"
             except Exception as e: return f"Failed to set reminder: {e}"
-        def show_reminders_tool(show_completed: bool = False) -> str:
+        def show_reminders_tool(show_completed: bool = True) -> str:
             reminders = self.store.get_all_reminders(include_completed=show_completed)
             if not reminders:
                 return "No reminders found." if not show_completed else "No reminders found (including completed)."
@@ -341,7 +341,7 @@ class AdvancedChatAgent:
             StructuredTool.from_function(func=save_memory_tool, name="save_memory", description="Save important information or facts.", args_schema=SaveMemoryInput),
             StructuredTool.from_function(func=find_memories_tool, name="find_memories", description="Search saved memories.", args_schema=FindMemoriesInput),
             StructuredTool.from_function(func=set_reminder_tool, name="set_reminder", description="Set a reminder for the future.", args_schema=SetReminderInput),
-            StructuredTool.from_function(func=show_reminders_tool, name="show_reminders", description="List all reminders including completed ones. Use this when users ask about their schedule, calendar, or reminders.", args_schema=ShowRemindersInput),
+            StructuredTool.from_function(func=show_reminders_tool, name="show_reminders", description="REQUIRED: Use this tool IMMEDIATELY when users ask about their reminders, schedule, calendar, or appointments. Shows all reminders with status indicators.", args_schema=ShowRemindersInput),
         ]
 
     def _create_agent_executor(self):
@@ -358,7 +358,7 @@ Guidelines:
 1.  **Be Proactive:** AUTOMATICALLY save memories when the user shares important information (names, projects, deadlines, preferences). Do not ask for permission.
 2.  **Use Your Memory:** PROACTIVELY search your memory when the user asks a question that might relate to past conversations.
 3.  **Offer Assistance:** OFFER to set reminders when the user mentions future tasks or events.
-4.  **Show Calendar:** When users ask about their reminders, schedule, calendar, or say phrases like "check my reminders", "what's on my calendar", "show reminders", ALWAYS use the show_reminders tool immediately.
+4.  **Show Calendar:** CRITICAL: When users ask about their reminders, schedule, calendar, appointments, or use phrases like "check my reminders", "what's on my calendar", "show reminders", "my schedule", "calendar", "appointments" - you MUST use the show_reminders tool immediately. Do not respond with generic text - use the tool first.
 5.  **Be Conversational:** Interact naturally. Do not announce your actions like "I am saving this to memory." The tool's output is your confirmation.
 6.  **Rate Importance:** Use the importance score (1-10) when saving memories. Critical info is 9-10, important details are 7-8, and casual facts are 4-6."""
 
