@@ -46,7 +46,7 @@ graph TD
 
     subgraph Agent Core [The Brain: AgentExecutor with ReAct Loop]
         B[AgentExecutor] -- Manages Flow --> B
-        B -- "What should I do next?" --> C{LLM (Hugging Face)}
+        B -- What should I do next? --> C{LLM (Hugging Face)}
         C -- "Thought: I should save this memory." --> B
         B -- "Use save_memory tool" --> T1[save_memory]
     end
@@ -77,7 +77,7 @@ graph TD
 3.  **The LLM (Hugging Face):** The Large Language Model receives the prompt and generates a "thought." This thought process might be a direct answer to you, or it might be a decision to use a tool.
 4.  **The Tools (Skills):** If the LLM decides to use a tool, the AgentExecutor calls the appropriate function (`save_memory`, `find_memories`, etc.).
 5.  **The Memory (Long-Term):** The tools interact directly with the `EnhancedMemoryStore`, which handles the logic of writing to the SQLite database and the FAISS vector store.
-5.  **The Response:** The result of the tool's action (e.g., "✓ Memory saved") or the LLM's direct answer is passed back to the AgentExecutor, which then delivers the final response to you.
+6.  **The Response:** The result of the tool's action (e.g., "✓ Memory saved") or the LLM's direct answer is passed back to the AgentExecutor, which then delivers the final response to you.
 
 ---
 
