@@ -174,6 +174,9 @@ class SetReminderInput(BaseModel):
     memory_content: str = Field(description="What to be reminded about")
     when: str = Field(description="When to remind (e.g., 'in 30 minutes', 'tomorrow at 9am', 'in 2 hours')")
 
+class ShowRemindersInput(BaseModel):
+    show_completed: Optional[bool] = Field(default=True, description="Whether to include completed reminders in the list")
+
 
 # ============================================================================
 # Enhanced Memory Store
@@ -266,6 +269,15 @@ class EnhancedMemoryStore:
             conn.execute("UPDATE reminders SET done = 1 WHERE id = ?", (reminder_id,))
             conn.commit()
 
+    def get_all_reminders(self, include_completed: bool = False) -> List[Tuple[Reminder, Memory]]:
+        with sqlite3.connect(self.db_path) as conn:
+            query = "SELECT r.*, m.* FROM reminders r JOIN memories m ON r.memory_id = m.id"
+            if not include_completed:
+                query += " WHERE r.done = 0"
+            query += " ORDER BY r.remind_at ASC"
+            rows = conn.execute(query).fetchall()
+            return [(Reminder.from_row(row[:7]), Memory.from_row(row[7:])) for row in rows]
+
     def get_all_memories(self) -> List[Memory]:
         with sqlite3.connect(self.db_path) as conn:
             rows = conn.execute("SELECT * FROM memories").fetchall()
@@ -310,10 +322,26 @@ class AdvancedChatAgent:
                 self.store.set_reminder(memory.id, remind_at)
                 return f"✓ Reminder set for {remind_at.strftime('%Y-%m-%d %H:%M')} UTC"
             except Exception as e: return f"Failed to set reminder: {e}"
+        def show_reminders_tool(show_completed: bool = False) -> str:
+            reminders = self.store.get_all_reminders(include_completed=show_completed)
+            if not reminders:
+                return "No reminders found." if not show_completed else "No reminders found (including completed)."
+            
+            now = datetime.now(UTC)
+            result = []
+            for reminder, memory in reminders:
+                remind_time = datetime.fromisoformat(reminder.remind_at.replace('Z', '+00:00'))
+                status = "✅ COMPLETED" if reminder.done else ("⏰ DUE NOW" if remind_time <= now else "⏳ PENDING")
+                time_str = remind_time.strftime('%Y-%m-%d %H:%M UTC')
+                result.append(f"• {status}: {memory.content}\n  Scheduled: {time_str}")
+            
+            header = "Your Reminders:" if not show_completed else "All Reminders (including completed):"
+            return f"{header}\n\n" + "\n\n".join(result)
         return [
             StructuredTool.from_function(func=save_memory_tool, name="save_memory", description="Save important information or facts.", args_schema=SaveMemoryInput),
             StructuredTool.from_function(func=find_memories_tool, name="find_memories", description="Search saved memories.", args_schema=FindMemoriesInput),
             StructuredTool.from_function(func=set_reminder_tool, name="set_reminder", description="Set a reminder for the future.", args_schema=SetReminderInput),
+            StructuredTool.from_function(func=show_reminders_tool, name="show_reminders", description="List all reminders including completed ones. Use this when users ask about their schedule, calendar, or reminders.", args_schema=ShowRemindersInput),
         ]
 
     def _create_agent_executor(self):
@@ -323,14 +351,16 @@ class AdvancedChatAgent:
 Your capabilities:
 - You have a long-term memory to store and recall information.
 - You can set reminders that will trigger at a specific time.
+- You can show users their complete calendar of all reminders (past and future).
 - You must decide when to use these tools based on the conversation.
 
 Guidelines:
 1.  **Be Proactive:** AUTOMATICALLY save memories when the user shares important information (names, projects, deadlines, preferences). Do not ask for permission.
 2.  **Use Your Memory:** PROACTIVELY search your memory when the user asks a question that might relate to past conversations.
 3.  **Offer Assistance:** OFFER to set reminders when the user mentions future tasks or events.
-4.  **Be Conversational:** Interact naturally. Do not announce your actions like "I am saving this to memory." The tool's output is your confirmation.
-5.  **Rate Importance:** Use the importance score (1-10) when saving memories. Critical info is 9-10, important details are 7-8, and casual facts are 4-6."""
+4.  **Show Calendar:** When users ask about their reminders, schedule, calendar, or say phrases like "check my reminders", "what's on my calendar", "show reminders", ALWAYS use the show_reminders tool immediately.
+5.  **Be Conversational:** Interact naturally. Do not announce your actions like "I am saving this to memory." The tool's output is your confirmation.
+6.  **Rate Importance:** Use the importance score (1-10) when saving memories. Critical info is 9-10, important details are 7-8, and casual facts are 4-6."""
 
         agent = create_agent(model=self.llm, tools=self.tools, system_prompt=system_message)
         return agent
