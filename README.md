@@ -26,7 +26,9 @@ In a world of stateless AI, this agent provides:
 
 -   ⏰ **Natural Language Smart Reminders**: You can ask the agent to "remind me to call John tomorrow morning" or "set a reminder in 3 hours." It parses these natural language requests, saves them as a high-importance memory, and runs a background process to notify you at the correct time.
 
--   🔌 **Dynamic Model Backend**: The agent is not tied to a single model. You can easily switch the underlying Hugging Face model via an environment variable, allowing you to experiment with different LLMs (like Mistral, Gemma, Llama, etc.) without changing a single line of code.
+-   � **Windows Notifications & Audio Alerts**: On Windows systems, reminders trigger both desktop toast notifications and audio alerts in addition to console notifications, ensuring you never miss important reminders.
+
+-   �🔌 **Dynamic Model Backend**: The agent is not tied to a single model. You can easily switch the underlying Hugging Face model via an environment variable, allowing you to experiment with different LLMs (like Mistral, Gemma, Llama, etc.) without changing a single line of code.
 
 -   🖥️ **Enhanced User Experience**: The command-line interface is powered by the `rich` library, providing formatted text, colors, and clear panels for a more pleasant and readable interaction.
 
@@ -86,6 +88,7 @@ graph TD
 -   **Python 3.11+**: This project requires a modern version of Python. Python 3.13 is confirmed to work.
 -   **Git**: For cloning the repository.
 -   **(Windows Only) C++ Build Tools**: Recommended for a smooth installation. You can get them from the [Visual Studio downloads page](https://visualstudio.microsoft.com/visual-studio-build-tools/) (select "Desktop development with C++").
+-   **Platform Notes**: Windows users get additional features including desktop notifications and audio alerts for reminders. These features gracefully degrade on other platforms.
 
 ### 1. Clone the Repository
 
@@ -138,6 +141,9 @@ rich
 
 # Pydantic is a core dependency for LangChain tool schemas
 pydantic
+
+# Windows desktop notifications and audio alerts (Windows only)
+win10toast
 ```
 
 ### 4. Install Dependencies

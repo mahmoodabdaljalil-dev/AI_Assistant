@@ -21,3 +21,6 @@ rich
 
 # Pydantic is a core dependency for LangChain tool schemas
 pydantic
+
+# Windows desktop notifications and audio alerts
+win10toast

@@ -55,6 +55,14 @@ except ImportError:
         @staticmethod
         def ask(prompt): return input(prompt)
 
+# Windows notifications and audio (optional)
+try:
+    import winsound
+    from win10toast import ToastNotifier
+    WINDOWS_NOTIFICATIONS_AVAILABLE = True
+except ImportError:
+    WINDOWS_NOTIFICATIONS_AVAILABLE = False
+
 
 # Small HF chat wrapper to normalize the InferenceClient for use with LangChain.
 class HFChatLLM(BaseChatModel):
@@ -344,10 +352,33 @@ Guidelines:
 
     def _start_reminder_daemon(self):
         def check():
+            toaster = ToastNotifier() if WINDOWS_NOTIFICATIONS_AVAILABLE else None
             while True:
                 try:
                     for reminder, memory in self.store.get_due_reminders():
+                        # Console notification
                         self.console.print(Panel(f"[bold yellow]⏰ REMINDER[/bold yellow]\n\n{memory.content}", title="Reminder", border_style="yellow"))
+
+                        # Windows desktop notification
+                        if WINDOWS_NOTIFICATIONS_AVAILABLE and toaster:
+                            try:
+                                toaster.show_toast(
+                                    "AI Assistant Reminder",
+                                    memory.content,
+                                    duration=10,
+                                    threaded=True
+                                )
+                            except Exception as e:
+                                logger.warning(f"Failed to show desktop notification: {e}")
+
+                        # Windows audio alert
+                        if WINDOWS_NOTIFICATIONS_AVAILABLE:
+                            try:
+                                # Play system asterisk sound (you can change this to different system sounds)
+                                winsound.MessageBeep(winsound.SND_ALIAS)
+                            except Exception as e:
+                                logger.warning(f"Failed to play audio alert: {e}")
+
                         self.store.mark_reminder_done(reminder.id)
                 except Exception as e:
                     logger.error(f"Reminder check error: {e}")
