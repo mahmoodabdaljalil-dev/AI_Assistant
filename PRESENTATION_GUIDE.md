@@ -1,7 +1,7 @@
 Slide 1: Title Slide
 Title: The Advanced AI Memory Agent
 Subtitle: From Stateless Chatbot to Stateful Digital Companion
-Presenter: Your Name / Your Team
+Presenter: mahmoodabdaljalil-dev
 Date: October 24, 2025
 Slide 2: The Core Problem: Digital Amnesia
 Title: The Universal Frustration of Chatbots
@@ -108,5 +108,5 @@ Takeaway 3: This is a Foundation: The agent is a powerful, extensible platform r
 Slide 12: Q&A
 Title: Thank You
 Subtitle: Questions & Discussion
-Contact Info: Your Name / Email
-Repo Link: github.com/your-username/advanced-ai-memory-agent
+Contact Info: mahmoodabdaljalil-dev
+Repo Link: github.com/mahmoodabdaljalil-dev/AI_Assistant
